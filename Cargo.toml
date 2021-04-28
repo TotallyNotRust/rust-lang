@@ -1,0 +1,9 @@
+[package]
+name = "rust-lang"
+version = "0.1.0"
+authors = ["TotallyNotRust <35370673+TotallyNotRust@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
+strum = "0.20"
+strum_macros = "0.20"
