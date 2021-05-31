@@ -6,6 +6,7 @@ enum Gender {
     Male,
     Female,
     NonBinary,
+}
 
 struct People {
     people: Vec<Person>,
@@ -47,7 +48,7 @@ fn main() {
                       .parse()
                       .expect("Not number\n");            
     let person_male = Person{age: age as i32, name: String::from("Jørgen"), gender: Gender::Male};
-    let person_female = Person{age: age as i32, name: String::from("Jørgen"), gender: Gender::Female};
+    let person_female = Person{age: age as i32, name: String::from("Jørgenessa"), gender: Gender::Female};
     let age: i32 = person_male.get_age();
     let name: &String = person_male.get_name();
     let gender: String = person_male.get_gender();
