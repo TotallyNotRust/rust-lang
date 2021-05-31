@@ -1,0 +1,14 @@
+PUSH 100 'd'
+PUSH 108 'l'
+PUSH 114 'r'
+PUSH 111 'o'
+PUSH 87 'W'
+PUSH 32 ' '
+PUSH 111 'o'
+PUSH 108 'l'
+PUSH 108 'l'
+PUSH 101 'e'
+PUSH 72 'H'
+[
+OUT
+]
