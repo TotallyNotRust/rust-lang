@@ -9,6 +9,6 @@ PUSH 108 'l'
 PUSH 108 'l'
 PUSH 101 'e'
 PUSH 72 'H'
-[
+OLOOP @e
 OUT
-]
+CLOOP

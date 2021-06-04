@@ -1,0 +1,5 @@
+IN @n
+OLOOP @z
+PUSHB @t
+OUT @n
+CLOOP
