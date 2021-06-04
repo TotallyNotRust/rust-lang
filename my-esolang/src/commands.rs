@@ -4,6 +4,8 @@
     mod math;
     use math::Math;
 
+    use std::collections::HashMap;
+
     use std::io;
     use std::io::{Read, Write, stdin, stdout};
 // Loop types enum
@@ -24,9 +26,9 @@
         }
         return (op[0], op[1]);
     }
-    pub fn get_loop_type(lines: &Vec<String>, code_pointer: &usize) -> LoopTypes {
-        let temp = lines[*code_pointer].split(" ").collect::<Vec<&str>>();
-        match temp[1] {
+    pub fn get_loop_type(line: Vec<&str>) -> LoopTypes {
+        
+        match line[1] {
             "@e" => return LoopTypes::UntilEmpty,
             "@z" => return LoopTypes::UntilZero,
             "@iz" => return LoopTypes::UntilIterZero,
@@ -36,9 +38,9 @@
     
 // In
     // Method for input, runs appropriate method depending on passed option
-    pub fn input(stack: &mut Vec<u8>, lines: &Vec<String>, code_pointer: &usize) {
-        let temp = lines[*code_pointer].split(" ").collect::<Vec<&str>>();
-        match temp[1] {
+    pub fn input(stack: &mut Vec<u8>, line: Vec<&str>) {
+        
+        match line[1] {
             "@n" => input_n(stack),
             "@c" => input_c(stack),
             n => panic!("{} is not a valid option", n)
@@ -82,9 +84,9 @@
     }
 // Out
     // Method for output, runs appropriate method depending on passed option
-    pub fn out(stack: &mut Vec<u8>, lines: &Vec<String>, code_pointer: &usize) {
-        let temp = lines[*code_pointer].split(" ").collect::<Vec<&str>>();
-        match temp[1] {
+    pub fn out(stack: &mut Vec<u8>, line: Vec<&str>) {
+        
+        match line[1] {
             "@n" => out_n(stack),
             "@c" => out_c(stack),
             n => panic!("{} is not a valid option", n)
@@ -101,35 +103,45 @@
         stack.remove(stack.len()-1);
     }
 // Math
-    pub fn div(stack: &mut Vec<u8>, lines: &Vec<String>, code_pointer: &usize){
-        let temp = lines[*code_pointer].split(" ").collect::<Vec<&str>>();
-        let (x, y) = parse_vec_ref_str_to_2_tuple_u8(temp);
+    pub fn div(stack: &mut Vec<u8>, line: Vec<&str>){
+        
+        let (x, y) = parse_vec_ref_str_to_2_tuple_u8(line);
         stack.push(Math::divide(x,y).unwrap());
     }
 // Pushing to stack
-    pub fn push(stack: &mut Vec<u8>, lines:&Vec<String>, code_pointer: &usize) {
-        let temp = lines[*code_pointer].split(" ").collect::<Vec<&str>>();
+    pub fn push(stack: &mut Vec<u8>, line: Vec<&str>) {
+        
 
-        match temp[1].parse::<u8>() {
+        match line[1].parse::<u8>() {
             Ok(n) => stack.push(n),
             Err(n) => println!("{}", n),
         };
     }
 
-    pub fn pushb(stack: &mut Vec<u8>, lines:&Vec<String>, code_pointer: &usize) -> Vec<u8> {
-        let temp = lines[*code_pointer].split(" ").collect::<Vec<&str>>();
+    pub fn pushb(stack: &mut Vec<u8>, line: Vec<&str>) -> Vec<u8> {
+        
 
-        match temp[1].parse::<u8>() {
+        match line[1].parse::<u8>() {
             Ok(n) => stack.insert(0, n),
-            Err(_) => match temp[1] {
+            Err(_) => match line[1] {
                 "@t" => {
-                    let mut temp_stack = vec![stack[0]];
-                    temp_stack.append(stack);
-                    return temp_stack
+                    let mut line_stack = vec![stack[0]];
+                    line_stack.append(stack);
+                    return line_stack
                 },
                 n => println!("{}", n)
             },
         };
         return stack.to_owned()
+    }
+// Variable related methods
+    pub fn set(variables: &mut HashMap<String, u8>, line:Vec<&str>){
+        match line[1] {
+            ""=> (),
+            n => match line[2].parse::<u8>() {
+                Ok(m) => {variables.insert(n.to_string(), m);},
+                _ => (),
+            }
+        }
     }
 //
