@@ -36,9 +36,9 @@
 > ## CLOOP
 > Closes loop if the designated loop value is set  
 
-> # LDITER
+> ## LDITER
 > Loads the top value as the stack into the iterator  
-> # CLRITER
+> ## CLRITER
 > Clears the iterator, setting it to zero  
 
 > ## SET {name} {value}
