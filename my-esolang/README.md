@@ -38,6 +38,11 @@
 
 > # LDITER
 > Loads the top value as the stack into the iterator  
-
 > # CLRITER
 > Clears the iterator, setting it to zero  
+
+> ## SET {name} {value}
+> Defines a variable named {name} with the value {value}  
+
+> ## GET {name}
+> Gets value of variable {name}  

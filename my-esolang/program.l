@@ -1,14 +1,8 @@
-PUSH 100 'd'
-PUSH 108 'l'
-PUSH 114 'r'
-PUSH 111 'o'
-PUSH 87 'W'
-PUSH 32 ' '
-PUSH 111 'o'
-PUSH 108 'l'
-PUSH 108 'l'
-PUSH 101 'e'
-PUSH 72 'H'
+
+pushes hello world to stack
+PUSH 100 108 114 111 87 32 111 108 108 101 72
+
+loops through stack and prints each value
 OLOOP @e
-OUT
+OUT @c
 CLOOP

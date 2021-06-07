@@ -1,3 +1,5 @@
+// Allows
+    #![allow(non_snake_case)]
 // Imports
     mod commands;
 
@@ -44,27 +46,18 @@ fn parse(contents: &mut String, TEMP_VARIABLES: Option<HashMap<String, u8>>) -> 
         }
     //
 
-    //println!("{}", contents);
 
-    let lines: Vec<String> = contents
-                        .split("\n")
-                        .collect::<Vec<&str>>()
-                        .iter()
-                        .map(|&i| {
-                            let mut output = String::from(i);
-                            match output.chars().last() {
-                                Some(n) => if n == '\r' {output.pop();},
-                                _ => ()
-                            }
-                            output
-                        })
-                        .collect::<Vec<String>>();
+    let lines: Vec<&str> = contents
+                        .split("\r\n")
+                        .collect::<Vec<&str>>();
+                
 
     //println!("{:?}", lines);
     loop {
         let line = lines[CODE_POINTER].split(" ").collect::<Vec<&str>>();
-        match lines[CODE_POINTER].split(" ").collect::<Vec<&str>>().first().copied().unwrap() {
+        match line.first().copied().unwrap() {
             "SET" => commands::set(&mut VARIABLES, line),
+            "GET" => commands::get(&mut STACK, &mut VARIABLES, line),
             "OUT" => commands::out(&mut STACK,  line),
             "IN" => commands::input(&mut STACK,  line),
             "DIV" => commands::div(&mut STACK,  line),
@@ -81,7 +74,8 @@ fn parse(contents: &mut String, TEMP_VARIABLES: Option<HashMap<String, u8>>) -> 
                     CODE_POINTER = START_LOOP
                 } 
                 else {START_LOOP = 0}}
-            n => println!("Unrecognized command: {}", n)
+            "\r\n" | "\n" | " " | "" => (),
+            n => match n == n.to_uppercase() {true => println!("Unrecognized command: {:?}", n), _=>()}
         }
         CODE_POINTER += 1;
         if CODE_POINTER == lines.len() {

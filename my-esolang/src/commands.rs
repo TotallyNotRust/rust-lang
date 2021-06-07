@@ -99,7 +99,14 @@
     }
     // Method for outputting numbers
     pub fn out_n(stack: &mut Vec<u8>){
-        print!("{}", match stack.len() {0 => None, n => Some(stack[n-1])}.unwrap());
+        print!("{}", 
+            match stack.len() {
+                0 => panic!("No item to print in stack!"), 
+                n => match Some(stack[n-1]) {
+                    None => {panic!("No item to print in stack!")},
+                    Some(n) => n,
+                }
+            });
         stack.remove(stack.len()-1);
     }
 // Math
@@ -109,25 +116,28 @@
         stack.push(Math::divide(x,y).unwrap());
     }
 // Pushing to stack
-    pub fn push(stack: &mut Vec<u8>, line: Vec<&str>) {
-        
-
-        match line[1].parse::<u8>() {
-            Ok(n) => stack.push(n),
-            Err(n) => println!("{}", n),
-        };
+    pub fn push(stack: &mut Vec<u8>, line: Vec<&str>){
+        let values: Vec<&str> = line[1..line.len()].iter().map(|&i| *&i).collect::<Vec<&str>>();
+        'loopvalues: for i in values {
+            match i {
+                n => {
+                    match n.parse::<u8>() {
+                        Ok(n) => stack.push(n),
+                        _ => break 'loopvalues,
+                    }
+                }
+            }
+        }
     }
 
     pub fn pushb(stack: &mut Vec<u8>, line: Vec<&str>) -> Vec<u8> {
-        
-
         match line[1].parse::<u8>() {
             Ok(n) => stack.insert(0, n),
             Err(_) => match line[1] {
                 "@t" => {
-                    let mut line_stack = vec![stack[0]];
-                    line_stack.append(stack);
-                    return line_stack
+                    let mut temp_stack = vec![stack[0]];
+                    temp_stack.append(stack);
+                    return temp_stack
                 },
                 n => println!("{}", n)
             },
@@ -135,13 +145,19 @@
         return stack.to_owned()
     }
 // Variable related methods
-    pub fn set(variables: &mut HashMap<String, u8>, line:Vec<&str>){
+    pub fn set(variables: &mut HashMap<String, u8>, line:Vec<&str>) {
         match line[1] {
             ""=> (),
             n => match line[2].parse::<u8>() {
                 Ok(m) => {variables.insert(n.to_string(), m);},
                 _ => (),
             }
+        }
+    }
+    pub fn get(stack: &mut Vec<u8>, variables: &mut HashMap<String, u8>, line:Vec<&str>) {
+        match variables.get(line[1]) {
+            Some(n) => stack.push(n.to_owned()),
+            _ => (),
         }
     }
 //
