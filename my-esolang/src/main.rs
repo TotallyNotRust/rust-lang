@@ -31,15 +31,15 @@ fn open_file() -> File {
     }
 }
 
-fn parse(contents: &mut String, TEMP_VARIABLES: Option<HashMap<String, u8>>) -> Result<i32, std::io::Error> {
+fn parse(contents: &mut String, TEMP_VARIABLES: Option<HashMap<String, Vec<u8>>>) -> Result<i32, std::io::Error> {
 
     // Variables
         let mut STACK: Vec<u8> = vec![];
         let mut CODE_POINTER: usize = 0;
         let mut START_LOOP: usize = 0;
         let mut ITER: u8 = 0;
-        let mut VARIABLES: HashMap<String, u8>;
         let mut LOOP_TYPE: commands::LoopTypes = commands::LoopTypes::Null;
+        let mut VARIABLES: HashMap<String, Vec<u8>>;
         match TEMP_VARIABLES {
             Some(n) => {VARIABLES = n;},
             _ => {VARIABLES = HashMap::new();},

@@ -85,7 +85,6 @@
 // Out
     // Method for output, runs appropriate method depending on passed option
     pub fn out(stack: &mut Vec<u8>, line: Vec<&str>) {
-        
         match line[1] {
             "@n" => out_n(stack),
             "@c" => out_c(stack),
@@ -145,18 +144,19 @@
         return stack.to_owned()
     }
 // Variable related methods
-    pub fn set(variables: &mut HashMap<String, u8>, line:Vec<&str>) {
-        match line[1] {
-            ""=> (),
-            n => match line[2].parse::<u8>() {
-                Ok(m) => {variables.insert(n.to_string(), m);},
-                _ => (),
+    pub fn set(variables: &mut HashMap<String, Vec<u8>>, line:Vec<&str>) {
+        let mut toAdd: Vec<u8> = vec![];
+        'addvalue: for i in &line[2..line.len()] {
+            match i.parse::<u8>() {
+                Ok(n) => toAdd.push(n),
+                _ => break 'addvalue,
             }
-        }
+        };
+        variables.insert(line[1].to_string(), toAdd);
     }
-    pub fn get(stack: &mut Vec<u8>, variables: &mut HashMap<String, u8>, line:Vec<&str>) {
+    pub fn get(stack: &mut Vec<u8>, variables: &mut HashMap<String, Vec<u8>>, line:Vec<&str>) {
         match variables.get(line[1]) {
-            Some(n) => stack.push(n.to_owned()),
+            Some(n) => for i in n {stack.push(i.to_owned())},
             _ => (),
         }
     }
