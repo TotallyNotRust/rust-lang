@@ -6,6 +6,4 @@ MIN
 PUSHB @t
 CLOOP
 LDITER
-OLOOP @e
-OUT @c
-CLOOP
+OUT @s

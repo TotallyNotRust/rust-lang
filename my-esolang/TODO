@@ -1,19 +1,23 @@
-- Allow lists in variables
-    - User can set list variables
-    - User can load list variables into stack
-    - User can use list variable as stack
-        - Stack is a variable set as the default stack
-        - User can change current stack
-
-- Print time it took to run program when it terminates
-
-- Optimize code
-    - Do this when you can't think of new features
-    - Likely needs time to be printed
-
-- Allow user to print whole stack with one command
-
-- Methods
-
-- Imports
-    - Import methods from other files
+✔️❌
+# completed
+ ✔️ Allow user to print whole stack with one command
+ ✔️ Print time it took to run program when it terminates
+# ongoing
+ ❌ Allow lists in variables
+     ✔️ User can set list variables
+     ✔️ User can load list variables into stack
+     ❌ User switch stack for variable
+     ❌ User can set stack as variable
+ 
+ 
+ ❌ Optimize code
+     ❌ Do this when you can't think of new features
+     ❌ Write directly to std instead of using print!/println!
+     ❌ Likely needs time to be printed
+ 
+ 
+ ❌ Methods
+ 
+ ❌ Imports
+     ❌ Import methods from other files
+#

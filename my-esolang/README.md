@@ -19,13 +19,13 @@
 >> @n; number  
 >> @c; char  
 
-> ## IN {Option}
+> ## IN {option}
 > Takes a single char or number input from user and puts it at the top of the stack  
 > ### Options
 >> @n; number  
 >> @c; char  
 
-> ## OLOOP {options}
+> ## OLOOP {option}
 > Opens loop  
 > If no value is passed it will default to @z  
 > ### Options
@@ -41,19 +41,25 @@
 > ## CLRITER
 > Clears the iterator, setting it to zero  
 
-> ## SET {name} {value}
+> ## SET {name} {value | option}
 > Defines a variable named {name} with the value {value}  
+> ### Options
+>> @s; set variable to the values of the stack
 
 > ## GET {name}
 > Gets value of variable {name}  
+
+> # COPY {name}
+> Copies stack to variable
+
+> # SWITCH {name}
+> Switches a vlaue variable for the value of the stack
 
 > ## Hello world program:
 > ``` rust
 > pushes hello world to stack  
 > PUSH 100 108 114 111 87 32 111 108 108 101 72  
 >   
-> loops through stack and prints each value  
-> OLOOP @e  
-> OUT @c  
-> CLOOP  
+> prints the whole stack  
+> OUT @s  
 > ```
