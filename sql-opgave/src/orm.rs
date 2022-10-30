@@ -40,7 +40,7 @@ impl ORM {
 
         for user in result {
             match user {
-                Ok(n) => parsed.push(n),
+                Ok(n) => parsed.push(n),       
                 Err(_) => return vec![],
             }
         }
