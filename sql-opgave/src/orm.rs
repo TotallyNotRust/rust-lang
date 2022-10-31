@@ -1,9 +1,9 @@
-use std::any::type_name;
+use std::collections::HashMap;
 
-use self::{database::DatabaseTable, user::User};
-use rusqlite::{Connection, Statement, NO_PARAMS};
+use self::database::DatabaseTable;
+use rusqlite::{Connection, Statement};
 
-mod database;
+pub mod database;
 pub mod user;
 
 pub struct ORM {
@@ -11,8 +11,8 @@ pub struct ORM {
 }
 
 impl ORM {
-    pub fn fromUrl(databaseUrl: &str) -> Result<ORM, rusqlite::Error> {
-        match Connection::open(databaseUrl) {
+    pub fn from_url(database_url: &str) -> Result<ORM, rusqlite::Error> {
+        match Connection::open(database_url) {
             Ok(connection) => {
                 return Ok(ORM {
                     database: connection,
@@ -25,18 +25,18 @@ impl ORM {
     pub fn select<T: DatabaseTable>(&self) -> Vec<T> {
         let mut statement: Statement = match self
             .database
-            .prepare(format!("SELECT * FROM {:?}", T::tableName()).as_str())
+            .prepare(format!("SELECT * FROM {:?}", T::table_name()).as_str())
         {
             Ok(n) => n,
             Err(_) => return vec![],
         };
 
-        let result = match statement.query_map([], |row| Ok(T::fromRow(row))) {
+        let result = match statement.query_map([], |row| Ok(T::from_row(row))) {
             Ok(n) => n,
             Err(_) => return vec![],
         };
 
-        let mut parsed: Vec<T> =vec![];
+        let mut parsed: Vec<T> = vec![];
 
         for user in result {
             match user {
@@ -46,5 +46,34 @@ impl ORM {
         }
 
         return parsed;
+    }
+    pub fn insert<T: DatabaseTable>(&self, item: T) -> Result<(), ()> {
+        let fields = item.get_values();
+
+        let mut keys = vec![];
+        let mut values: Vec<String> = vec![];
+
+        for (k, v) in fields {
+            keys.push(k);
+            values.push(v);
+        }
+
+        let mut sql = format!(
+            "INSERT INTO {} {:?} VALUES {:?}",
+            T::table_name(),
+            keys,
+            values,
+        );
+
+        sql = sql.replace("[", "(").replace("]", ")").replace("\"", "");
+
+        let statement = self.database.execute(sql.as_str(), []);
+
+        println!("{:?}\n{:?}", statement, sql);
+
+        match statement {
+            Ok(_) => Ok(()),
+            Err(_) => Err(()),
+        }
     }
 }
